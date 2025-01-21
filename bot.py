@@ -3,7 +3,7 @@ import logging
 import asyncio
 import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ChatPermissions
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext, CallbackQueryHandler
 from telegram.error import TelegramError
 from database import get_db, get_movie_by_stream_id, search_movies, increment_movie_views
 from datetime import datetime, timedelta
