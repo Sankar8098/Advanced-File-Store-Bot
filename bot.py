@@ -3,8 +3,7 @@ import logging
 import asyncio
 import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ChatPermissions
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext, CallbackQueryHandler
-from telegram.error import TelegramError
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext, CallbackQueryHandler
 from database import get_db, get_movie_by_stream_id, search_movies, increment_movie_views
 from datetime import datetime, timedelta
 from config import Config
@@ -79,16 +78,14 @@ async def start(update: Update, context: CallbackContext) -> None:
 def main():
     """Start the bot."""
     try:
-        updater = Updater(Config.TELEGRAM_BOT_TOKEN)
-        dispatcher = updater.dispatcher
+        application = Application.builder().token(Config.TELEGRAM_BOT_TOKEN).build()
         
         # Add handlers
-        dispatcher.add_handler(CommandHandler("start", start))
+        application.add_handler(CommandHandler("start", start))
         
         # Start the bot
-        updater.start_polling()
+        application.run_polling()
         logger.info("Bot started successfully!")
-        updater.idle()
         
     except Exception as e:
         logger.error(f"Error starting bot: {e}")

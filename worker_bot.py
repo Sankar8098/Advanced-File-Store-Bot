@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext, CallbackQueryHandler
+from telegram.ext import Application, MessageHandler, filters, CallbackContext, CallbackQueryHandler
 from database import get_movie_by_stream_id, verify_url_token
 from datetime import datetime, timedelta
 from config import Config
@@ -128,7 +128,7 @@ async def handle_download_stream_options(update: Update, context: CallbackContex
         context.job_queue.run_once(
             delete_movie_file,
             1800,  # 30 minutes in seconds
-            context={
+            data={
                 'chat_id': update.effective_chat.id,
                 'message_id': sent_message.message_id
             }
@@ -145,11 +145,11 @@ async def delete_movie_file(context: CallbackContext) -> None:
     job = context.job
     try:
         await context.bot.delete_message(
-            chat_id=job.context['chat_id'],
-            message_id=job.context['message_id']
+            chat_id=job.data['chat_id'],
+            message_id=job.data['message_id']
         )
         await context.bot.send_message(
-            chat_id=job.context['chat_id'],
+            chat_id=job.data['chat_id'],
             text="⚠️ The movie file has been automatically deleted for security reasons."
         )
     except Exception as e:
@@ -158,16 +158,16 @@ async def delete_movie_file(context: CallbackContext) -> None:
 def main():
     """Start the bot."""
     try:
-        updater = Updater(Config.WORKER_BOT_TOKEN)
-        dispatcher = updater.dispatcher
+        application = Application.builder().token(Config.WORKER_BOT_TOKEN).build()
         
         # Add handlers
-        dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_worker_verification))
-        dispatcher.add_handler(CallbackQueryHandler(handle_download_stream_options))
+        application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_worker_verification))
+        application.add_handler(CallbackQueryHandler(handle_download_stream_options))
         
-        updater.start_polling()
+        # Start the bot
+        application.run_polling()
         logger.info("Worker bot started successfully!")
-        updater.idle()
+        
     except Exception as e:
         logger.error(f"Error starting worker bot: {e}")
 
