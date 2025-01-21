@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext, CallbackQueryHandler
 from database import get_movie_by_stream_id, verify_url_token
 from datetime import datetime, timedelta
 from config import Config
