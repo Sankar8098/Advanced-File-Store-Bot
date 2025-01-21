@@ -1,0 +1,13 @@
+setup:
+  addons:
+    - plan: heroku-redis:mini
+    - plan: mongolab:sandbox
+  config:
+    PYTHON_VERSION: 3.9.18
+build:
+  docker:
+    web: Dockerfile
+    worker: Dockerfile
+run:
+  web: python bot.py
+  worker: python worker_bot.py

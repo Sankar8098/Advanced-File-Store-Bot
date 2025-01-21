@@ -1,0 +1,59 @@
+{
+  "name": "Advanced File Store Bot",
+  "description": "A powerful Telegram bot for storing and streaming files with advanced features.",
+  "repository": "https://github.com/username/advanced-file-store-bot.git",
+  "logo": "https://graph.org/file/29c1cf05d61f49ed3aa0b.jpg",
+  "keywords": ["telegram", "bot", "file-storage", "python"],
+  "stack": "container",
+  "env": {
+    "TELEGRAM_BOT_TOKEN": {
+      "description": "Your Telegram Bot Token from @BotFather",
+      "required": true
+    },
+    "WORKER_BOT_TOKEN": {
+      "description": "Your Worker Bot Token from @BotFather",
+      "required": true
+    },
+    "API_ID": {
+      "description": "Your API ID from my.telegram.org",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Your API Hash from my.telegram.org",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "Your Telegram User ID",
+      "required": true
+    },
+    "CHANNEL_ID": {
+      "description": "Your Channel ID (e.g., -100xxxxxxxx)",
+      "required": true
+    },
+    "MONGODB_URI": {
+      "description": "Your MongoDB connection string (format: mongodb+srv://username:password@cluster.mongodb.net/filestore)",
+      "required": true,
+      "value": "mongodb+srv://username:password@cluster.mongodb.net/filestore"
+    },
+    "ADMINS": {
+      "description": "Space-separated list of admin user IDs",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "success_url": "/"
+}

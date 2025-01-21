@@ -1,0 +1,7 @@
+{
+  "name": "telegram-video-bot",
+  "private": true,
+  "scripts": {
+    "start": "pip install -r requirements.txt && python bot.py"
+  }
+}
